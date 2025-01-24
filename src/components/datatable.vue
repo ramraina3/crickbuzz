@@ -104,18 +104,16 @@
           @click="teamshuffle()"
           hide-details
         ></v-btn>
-        <br>
-        <br>
-        <br>
-        <br>
+        <br />
+        <br />
         <div class="text-center">
-            <v-layout style="text-center" v-if="refreshStatus">
-            <v-progress-linear     
-                :size="90"
-                color="amber"
-                indeterminate
+          <v-layout style="text-center" v-if="refreshStatus">
+            <v-progress-linear
+              :size="90"
+              color="amber"
+              indeterminate
             ></v-progress-linear>
-            </v-layout>
+          </v-layout>
         </div>
         <v-card class="mx-auto" max-width="700">
           <h2
@@ -195,51 +193,67 @@ export default {
     ],
     players: [
       {
+        id: 1,
         name: "AYYAS",
       },
       {
+        id: 2,
         name: "RAM",
       },
       {
+        id: 3,
         name: "AMRE",
       },
       {
+        id: 4,
         name: "KARTHIKEYAN",
       },
       {
+        id: 5,
         name: "SAI",
       },
       {
+        id: 6,
         name: "MOHAN",
       },
       {
+        id: 7,
         name: "KARTHI",
       },
       {
+        id: 8,
         name: "KEERTHI",
       },
       {
+        id: 9,
         name: "SARAVANAN",
       },
       {
+        id: 10,
         name: "SURESH",
       },
       {
+        id: 11,
         name: "RAGAVAN",
       },
       {
+        id: 12,
         name: "JEEVA",
       },
       {
+        id: 13,
         name: "ARJUN",
       },
       {
+        id: 14,
         name: "ABI",
       },
       {
+        id: 15,
         name: "JANA",
       },
       {
+        id: 16,
         name: "BARATH",
       },
     ],
@@ -271,39 +285,6 @@ export default {
   //   },
 
   methods: {
-    sliceAndGetRemainder(array, number) {
-      // Get the sliced portion
-      const sliced = array.slice(0, number);
-      // Get the remainder portion
-      const remainder = array.slice(number);
-
-      return { sliced, remainder };
-    },
-    findLargestArray(...arrays) {
-      let largestArray = arrays[0]; // Assume the first array is the largest
-
-      for (const arr of arrays) {
-        if (arr.length > largestArray.length) {
-          largestArray = arr; // Update the largest array
-        }
-      }
-
-      return largestArray;
-    },
-    findShortestArray(...arrays) {
-      let minIndex = 0; // Assume the first array is the shortest
-      let minLength = arrays[0].length; // Store its length
-
-      // Loop through arrays to find the shortest one
-      for (let i = 1; i < arrays.length; i++) {
-        if (arrays[i].length < minLength) {
-          minIndex = i; // Update the index of the shortest array
-          minLength = arrays[i].length; // Update the minimum length
-        }
-      }
-
-      return { index: minIndex, array: arrays[minIndex], length: minLength };
-    },
     randomlyDivideArray(array) {
       // Shuffle the array
       const shuffledArray = array.slice().sort(() => Math.random() - 0.5);
@@ -312,7 +293,13 @@ export default {
       const midIndex = Math.floor(shuffledArray.length / 2);
       const part1 = shuffledArray.slice(0, midIndex);
       const part2 = shuffledArray.slice(midIndex);
-      return [part1, part2];
+      if (part1.length === part2.length) {
+        return [part1, part2, null];
+      } else {
+        var newpart2 = part2.slice(midIndex);
+        var part3 = part2.splice(newpart2, 1);
+        return [part1, part2, part3];
+      }
     },
 
     // initialize() {
@@ -330,24 +317,18 @@ export default {
       this.Btnclicked = true;
 
       //   need to be work
-      const [group1, group2] = this.randomlyDivideArray(teammembers);
-      if (group1.length == group2.length) {
+      const [group1, group2, group3] = this.randomlyDivideArray(teammembers);
+      if (group3 == null) {
         this.teamcdisable = false;
       } else {
         this.teamcdisable = true;
-        const largestArray = this.findLargestArray(group1, group2);
-        const shortestArray = this.findShortestArray(group1, group2);
-        var difference = this.sliceAndGetRemainder(
-          largestArray,
-          shortestArray.length
-        );
-        this.Cteam = difference.remainder;
+        this.Cteam = group3;
       }
       this.Ateam = group1;
       this.Bteam = group2;
-        setTimeout(() => {
-            this.refreshStatus = false;
-        }, 3000);
+      setTimeout(() => {
+        this.refreshStatus = false;
+      }, 2000);
     },
     backtodatatable() {
       this.spinDialog = false;
